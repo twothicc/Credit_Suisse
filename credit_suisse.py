@@ -2,7 +2,8 @@
 
 samples = [1,2,6,3,17,82,23,234]
 
-#Assumes that the sample contains only positive integers
+#Assumes that the sample contains only non-negative integers
+#n can be any value
 #sample should take in the integer array
 #n should be the value that needs to be formed
 #This function will look to find combinations of values in sample that will give n
@@ -52,7 +53,7 @@ def find_solution(n, sample) :
 			if change < 0 :
 
 				change += length
-			
+
 			if (val(ele_idx) + reference[change]) <= n :
 
 				sample_edit[ele_idx][0] += reference[change]
