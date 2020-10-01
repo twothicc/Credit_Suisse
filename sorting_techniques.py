@@ -460,42 +460,47 @@ class BST(object) :
 
 
 
-#heap_sort has n * log n runtime complexity with 1 space complexity	
+#heap_sort has n * log n runtime complexity with 1 space complexity 
 def heap_sort(lst) :
 	#length here limits the index of the maxheap that max_heapify will check till. This allows us to not check
 	#already sorted indexes
+	def heapify(lst, index, length):
+		idx = index
+		largest = index
+		#changes largest to the index of the largest value between idx, idx * 2, idx * 2 + 1
+		if (idx * 2 + 1) < length:
+			if lst[idx * 2 + 1] > lst[idx * 2]:
+				if lst[idx * 2 + 1] > lst[idx]:
+					largest = idx * 2 + 1
+			else:
+				if lst[idx * 2] > lst[idx]:
+					largest = idx * 2
+		elif idx * 2 < length:
+			if lst[idx * 2] > lst[idx]:
+				largest = idx * 2
+		#if largest was not idx, heapify must be applied to new sub branch as well
+		if largest != idx:
+			lst[idx], lst[largest] = lst[largest], lst[idx]
+			heapify(lst, largest, length)
+
 	def max_heapify(lst, length) :
 		#is_change checks if anything has been changed
-		#If something is changed, need to run max_heapify again to verify if changes are correct
-		is_change = False
-		max_half = math.floor(len(lst) / 2)
+		max_half = len(lst) // 2
 		for i in range(max_half) :
-			idx = max_half - i 
-			#Must add -1 to all the calculations with idx since its represented in 1,2,3,... while list index is 0,1,2,3,...
-			if (idx * 2 - 1) < length :
-				if lst[idx - 1] < lst[idx * 2 - 1] :
-					lst[idx - 1], lst[idx * 2 - 1] = lst[idx * 2 - 1], lst[idx - 1]
-					is_change = True
-					
-			if (idx * 2) < length :
-				if lst[idx - 1] < lst[idx * 2] :
-					lst[idx - 1], lst[idx * 2] = lst[idx * 2], lst[idx - 1]
-					is_change = True
-		#Recursively runs max_heapify till list is sorted
-		if is_change :
-			return max_heapify(lst, length)
-		else :
-			return lst
+			idx = max_half - i - 1
+			heapify(lst, idx, length)
 
 	#length will determine the index in maxheap to check to. Rmbr index in this maxheap goes from 1,2,3,... so dunnid to minus 1
 	length = len(lst)
+	#Generate max heap
+	max_heapify(lst, length)
 	while length > 1 :
-		lst = max_heapify(lst, length)
 		#Swap first and last element, which are largest and smallest, then pop the last element, which is now largest
 		lst[0], lst[length - 1] = lst[length - 1], lst[0]
-		#Then add to another list
 		length -= 1
-	
+		#Re heapify lst
+		heapify(lst, 0, length)
+
 	return lst
 
 def map2(f, xs) :
