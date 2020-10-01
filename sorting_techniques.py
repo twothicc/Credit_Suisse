@@ -105,15 +105,15 @@ def insertion_sort(xs) :
 
 #Selection_sort has a runtime complexity of O(n^2)
 def selection_sort(xs) :
-	result = []
-	for i in range(len(xs)) :
-		smallest = xs[0]
-		for idx in range(len(xs)) :
-			if xs[idx] <= smallest :
-				smallest = xs[idx]
-		result.append(smallest)
-		xs.remove(smallest)
-	return result
+	length = len(xs)
+	for initial in range(length):
+		smallest = initial
+		for i in range(initial, length) :
+			if xs[i] < xs[smallest]:
+				smallest = i
+		if initial != smallest:
+			xs[initial], xs[smallest] = xs[smallest], xs[initial]
+	return xs
 
 #Counting_sort has a runtime complexity of O(n + k) whereby k is the range
 def counting_sort(xs, xs_range) :
