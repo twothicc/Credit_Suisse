@@ -117,26 +117,18 @@ def selection_sort(xs) :
 
 #Counting_sort has a runtime complexity of O(n + k) whereby k is the range
 def counting_sort(xs, xs_range) :
-	#Must know the range beforehand
-	#This is bad for comparing floats
-	counts = {}
-	for val in range(xs_range + 1) :
-		counts[val] = 0
+	#Initialize counter vector
+	counts = [0] * (xs_range + 1)
 	
 	for idx in range(len(xs)) :
 		counts[xs[idx]] += 1
-
-	for val in range(1, xs_range + 1) :
-		counts[val] += counts[val - 1]
-
-	xs = [None for x in xs]
-
+	
+	#Create copy of xs
+	xs2 = []
+	#Appends count of values into xs2
 	for val in range(xs_range + 1) :
-		if counts[val] != 0 :
-			for i in range(counts[val]) :
-				if xs[i] == None :
-					xs[i] = val
-	return xs
+		xs2 += [val] * counts[val]
+	return xs2
 
 #radix_sort has a runtime complexity of O((n+b) * logb(k)) where b is the base and k is the largest possible value
 def radix_sort(xs) :
