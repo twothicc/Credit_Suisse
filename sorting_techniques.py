@@ -139,42 +139,38 @@ def counting_sort(xs, xs_range) :
 	return xs
 
 #radix_sort has a runtime complexity of O((n+b) * logb(k)) where b is the base and k is the largest possible value
-def radix_sort(xs) :
+def get_digit(number, digit):
+    return number // 10**(digit) % 10
 
-	def counting_sort_radix(xs, base) :
-		
-		counts = {}
-		for idx in range(10) :
-			counts[idx] = [0,[]]
+def prefix_sum(base_list):
+	prefix = 0
+	for i in range(len(base_list)):
+		base_list[i] += prefix
+		prefix = base_list[i]
 
-		for idx in range(len(xs)) :
-			base_val = int(xs[idx] / base) % 10
-			counts[base_val][0] += 1
-			counts[base_val][1].append(xs[idx])
-
-		for count in range(1, 10) :
-			counts[count][0] += counts[count - 1][0]	
-
-		xs = [None for x in xs]
-
-		for count in range(10) :
-			if counts[count][0] != 0 :
-				for i in range(counts[count][0]) :
-					if xs[i] == None :
-						xs[i] = counts[count][1].pop(0)
-		return xs
-	
-	max_val = max(xs)
-	num_bases = 1
-	while max_val > 1 :
-		num_bases += 1
-		max_val /= 10
-	
-	for bases in range(num_bases) :
-		base = 10 ** bases
-		xs = counting_sort_radix(xs, base)
-
-	return xs
+def radix_sort(arr):
+	length = len(arr)
+	counter = [0] * base
+	temp = [0] * length
+	base = 10
+	layers = 1
+	comparison = 10
+	for i in arr:
+		while i >= comparison:
+			layers += 1
+			comparison *= 10
+	for digit in range(layers):
+		for i in arr:
+			counter[get_digit(i, digit)] += 1
+		prefix_sum(counter)
+		for i in range(length):
+			value = get_digit(arr[-i - 1], digit)
+			counter[value] -= 1
+			temp[counter[value]] = arr[-i - 1]
+		arr, temp = temp, arr
+		for i in range(base):
+			counter[i] = 0
+	return arr
 
 #Bubble_sort has a runtime complexity of O(n^2)
 #For every element in list, it checks with every following element in list. If its larger, it swaps and continues checking
