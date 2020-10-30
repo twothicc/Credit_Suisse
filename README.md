@@ -1,2 +1,2 @@
-# Algorithms
-Basic Sorting Algorithms and more
+# Algorithms and Data Structures
+Basic Sorting Algorithms, Data Structures and more
